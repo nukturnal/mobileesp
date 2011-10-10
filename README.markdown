@@ -28,6 +28,9 @@ Usage example in rails
       # You probably still get the computer layout
     end
 
+Added Auto Detection for jQueryMobile Supported Devices
+-------------------------------------------------------
+	ua.detect_jquerymobile?
 
 Quick list of detection methods
 -------------------------------

@@ -317,6 +317,14 @@ module MobileESP
         detect_palm_os ||
         detect_garmin_nuvifone )
     end
+    
+    # Detects Jquery Capable Mobile
+    def detect_jquerymobile
+      ( detect_tier_iphone ||
+        detect_windows_phone7 || 
+        detect_opera_mobile || 
+        detect_black_berry_high )
+    end
 
     # Detects whether the device is a Brew-powered device.
     def detect_brew_device
