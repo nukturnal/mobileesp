@@ -32,6 +32,10 @@ Added Auto Detection for jQueryMobile Supported Devices
 -------------------------------------------------------
 	ua.detect_jquerymobile?
 
+Added Google Mobile Bot Detection
+-------------------------------------------------------
+	ua.detect_mobile_bot?
+
 Quick list of detection methods
 -------------------------------
 

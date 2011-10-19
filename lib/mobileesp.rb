@@ -26,12 +26,13 @@ module MobileESP
 
     # Optional: store values for quickly accessing same info multiple times.
     # Call InitDeviceScan() to initialize these values.
-    attr_reader :user_agent, :http_accept, :is_iphone, :is_tier_tablet, :is_tier_iphone, :is_tier_rich_css, :is_tier_generic_mobile
+    attr_reader :user_agent, :http_accept, :is_iphone, :is_tier_tablet, :is_tier_iphone, :is_tier_rich_css, :is_tier_generic_mobile, :mobile_bot
     alias :get_is_iphone :is_iphone
     alias :get_is_tier_tablet :is_tier_tablet
     alias :get_is_tier_iphone :is_tier_iphone
     alias :get_is_tier_rich_css :is_tier_rich_css
     alias :get_is_tier_generic_mobile :is_tier_generic_mobile
+    alias :get_is_mobile_bot :mobile_bot
 
     # Initialize some initial smartphone string variables.
     ENGINE_WEB_KIT = "webkit"
@@ -124,6 +125,8 @@ module MobileESP
 
     # Disambiguation strings.
     DIS_UPDATE = "update" #pda vs. update
+    
+    GOOGLEBOT = "googlebot-mobile"
 
 
     # Initialize the userAgent and httpAccept variables
@@ -131,8 +134,8 @@ module MobileESP
     # @param userAgent the User-Agent header
     # @param httpAccept the Accept header
     def initialize(user_agent, http_accept)
-      @user_agent = user_agent.downcase || ''
-      @http_accept = http_accept.downcase || ''
+      @user_agent = user_agent.try(:downcase) || ''
+      @http_accept = http_accept.try(:downcase) || ''
       # Intialize key stored values.
       init_device_scan()
     end
@@ -154,6 +157,7 @@ module MobileESP
       @is_tier_iphone = detect_tier_iphone
       @is_tier_rich_css = detect_tier_rich_css
       @is_tier_generic_mobile = detect_tier_other_phones
+      @get_is_mobile_bot = detect_mobile_bot
     end
 
     # Detects if the current device is an iPhone.
@@ -323,7 +327,8 @@ module MobileESP
       ( detect_tier_iphone ||
         detect_windows_phone7 || 
         detect_opera_mobile || 
-        detect_black_berry_high )
+        detect_black_berry_high ||
+        detect_mobile_bot )
     end
 
     # Detects whether the device is a Brew-powered device.
@@ -480,6 +485,11 @@ module MobileESP
     #   but excludes the iPhone and RichCSS Tier devices.
     def detect_tier_other_phones
       detect_mobile_quick && !detect_tier_iphone && !detect_tier_rich_css
+    end
+    
+    #Detect Google Mobile Robot to properly render mobile instant preview and mobile searches
+    def detect_mobile_bot 
+      !@user_agent.index(GOOGLEBOT).nil?
     end
 
 
